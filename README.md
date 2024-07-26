@@ -7,3 +7,4 @@ Aplicativo de Chat
 
 #### - Kotlin Language
 #### - UI Composable
+#### - Navigation
