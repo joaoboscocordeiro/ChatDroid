@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.joaobosco.chatdroid.navigation.ChatNavHost
+import com.joaobosco.chatdroid.ui.ChatApp
 import com.joaobosco.chatdroid.ui.theme.ChatDroidTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ChatDroidTheme {
-                ChatNavHost()
+                ChatApp()
             }
         }
     }

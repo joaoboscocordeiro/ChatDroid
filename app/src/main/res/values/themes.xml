@@ -3,7 +3,7 @@
 
     <style name="Theme.ChatDroid" parent="android:Theme.Material.Light.NoActionBar" />
 
-    <style name="Theme.ChatApp.MySplash" parent="Theme.SplashScreen">
+    <style name="Theme.ChatDroid.MySplash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">#000000</item>
         <item name="windowSplashScreenAnimationDuration">600</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
