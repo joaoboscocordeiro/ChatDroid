@@ -117,7 +117,7 @@ fun PrimaryTextField(
 
         errorMessage?.let {
             Text(
-                text = "Senha é obrigatória",
+                text = it,
                 modifier = Modifier
                     .padding(start = 16.dp),
                 color = MaterialTheme.colorScheme.error
