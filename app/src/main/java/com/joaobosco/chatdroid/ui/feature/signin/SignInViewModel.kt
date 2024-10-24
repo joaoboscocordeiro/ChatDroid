@@ -34,6 +34,7 @@ class SignInViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun doSignIn() {
-
+        formState = formState.copy(isLoading = true)
+        // Request to api
     }
 }

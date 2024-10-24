@@ -62,7 +62,7 @@ fun SignInScreen(
 
         Spacer(modifier = Modifier.height(78.dp))
 
-        PrimaryTextField(
+         PrimaryTextField(
             value = formState.email,
             onValueChanger = {
                 onFormEvent(SignInFormEvent.EmailChanged(it))
