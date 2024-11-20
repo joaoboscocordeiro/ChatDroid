@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -120,7 +119,8 @@ fun PrimaryTextField(
                 text = it,
                 modifier = Modifier
                     .padding(start = 16.dp),
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.labelMedium
             )
         }
     }
@@ -135,6 +135,20 @@ private fun PrimaryTextFieldPreview() {
             onValueChanger = {},
             placeholder = "E-mail",
             leadingIcon = R.drawable.ic_envelope
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PrimaryTextFieldErrorPreview() {
+    ChatDroidTheme {
+        PrimaryTextField(
+            value = "",
+            onValueChanger = {},
+            placeholder = "E-mail",
+            leadingIcon = R.drawable.ic_envelope,
+            errorMessage = "E-mail inválido!"
         )
     }
 }

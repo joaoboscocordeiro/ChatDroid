@@ -33,3 +33,10 @@ Aplicativo de Chat
     Ele simplifica e acelera o desenvolvimento de UI no Android. 
     Dê vida ao seu aplicativo rapidamente com menos código, ferramentas poderosas e 
     APIs Kotlin intuitivas.
+
+### Navigation:
+
+    - O componente Navigation do Android Jetpack inclui a biblioteca Navigation, o plug-in 
+    Safe Args do Gradle e ferramentas para ajudar você a implementar a navegação no app. 
+    O componente Navigation processa diversos casos de uso de navegação, desde cliques simples 
+    em botões até padrões mais complexos, como barras de apps e a gaveta de navegação.
