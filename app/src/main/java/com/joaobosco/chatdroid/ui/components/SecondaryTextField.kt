@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.joaobosco.chatdroid.R
+import com.joaobosco.chatdroid.ui.extension.bottomBorder
 import com.joaobosco.chatdroid.ui.extension.getVisualTransformationForPassword
 import com.joaobosco.chatdroid.ui.theme.ChatDroidTheme
 import com.joaobosco.chatdroid.ui.theme.ColorSuccess
@@ -84,6 +85,11 @@ fun SecondaryTextField(
             color = MaterialTheme.colorScheme.surface
         ) {
             Row(
+                modifier = Modifier
+                    .bottomBorder(
+                        MaterialTheme.colorScheme.onSurfaceVariant,
+                        1.dp
+                    ),
                 verticalAlignment = CenterVertically
             ) {
                 Column(
