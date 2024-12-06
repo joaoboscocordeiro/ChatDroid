@@ -42,7 +42,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpRoute(
-    viewModel: SignUpViewModel = viewModel()
+    viewModel: SignUpViewModel = viewModel {
+        SignUpViewModel(SignUpFormValidator())
+    }
 ) {
     val formState = viewModel.formState
     SignUpScreen(
@@ -107,6 +109,12 @@ fun SignUpScreen(
                         value = formState.firstName,
                         onValueChange = {
                             onFormEvent(SignUpFormEvent.FirstNameChanged(it))
+                        },
+                        errorText = formState.firstNameError?.let {
+                            stringResource(
+                                id = it,
+                                stringResource(id = R.string.feature_sign_up_first_name)
+                            )
                         }
                     )
 
@@ -117,6 +125,12 @@ fun SignUpScreen(
                         value = formState.lastName,
                         onValueChange = {
                             onFormEvent(SignUpFormEvent.LestNameChanged(it))
+                        },
+                        errorText = formState.lastNameError?.let {
+                            stringResource(
+                                id = it,
+                                stringResource(id = R.string.feature_sign_up_last_name)
+                            )
                         }
                     )
 
@@ -128,7 +142,8 @@ fun SignUpScreen(
                         onValueChange = {
                             onFormEvent(SignUpFormEvent.EmailChanged(it))
                         },
-                        keyboardType = KeyboardType.Email
+                        keyboardType = KeyboardType.Email,
+                        errorText = formState.emailError?.let { stringResource(id = it) }
                     )
 
                     Spacer(modifier = Modifier.height(22.dp))
@@ -140,7 +155,8 @@ fun SignUpScreen(
                             onFormEvent(SignUpFormEvent.PasswordChanged(it))
                         },
                         keyboardType = KeyboardType.Password,
-                        extraText = formState.passwordExtraText?.let { stringResource(id = it) }
+                        extraText = formState.passwordExtraText?.let { stringResource(id = it) },
+                        errorText = formState.passwordError?.let { stringResource(id = it) }
                     )
 
                     Spacer(modifier = Modifier.height(22.dp))
@@ -153,7 +169,8 @@ fun SignUpScreen(
                         },
                         keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Done,
-                        extraText = formState.passwordExtraText?.let { stringResource(id = it) }
+                        extraText = formState.passwordExtraText?.let { stringResource(id = it) },
+                        errorText = formState.passwordConfirmationError?.let { stringResource(id = it) }
                     )
 
                     Spacer(modifier = Modifier.height(36.dp))

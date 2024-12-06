@@ -5,11 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.joaobosco.chatdroid.R
+import com.joaobosco.chatdroid.ui.validator.FormValidator
 
 /**
  * Created by "João Bosco" on 04/12/2024.
  */
-class SignUpViewModel : ViewModel() {
+class SignUpViewModel(
+    private val formValidator: FormValidator<SignUpFormState>
+) : ViewModel() {
 
     var formState by mutableStateOf(SignUpFormState())
         private set
@@ -51,7 +54,7 @@ class SignUpViewModel : ViewModel() {
             }
 
             SignUpFormEvent.Submit -> {
-
+                doSignUp()
             }
         }
     }
@@ -59,14 +62,11 @@ class SignUpViewModel : ViewModel() {
     private fun updatePasswordExtraText() {
         formState = formState.copy(
             passwordExtraText = if (formState.password.isNotEmpty()
-                && formState.password == formState.passwordConfirmation) {
+                && formState.password == formState.passwordConfirmation
+            ) {
                 R.string.feature_sign_up_passwords_match
             } else null
         )
-    }
-
-    private fun isValidForm(): Boolean {
-        return false
     }
 
     private fun doSignUp() {
@@ -74,5 +74,11 @@ class SignUpViewModel : ViewModel() {
             formState = formState.copy(isLoading = true)
             // Request to API
         }
+    }
+
+    private fun isValidForm(): Boolean {
+        return !formValidator.validate(formState).also {
+            formState = it
+        }.hasError
     }
 }
