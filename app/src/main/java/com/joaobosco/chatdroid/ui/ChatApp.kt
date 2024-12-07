@@ -1,7 +1,9 @@
 package com.joaobosco.chatdroid.ui
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -16,10 +18,12 @@ import com.joaobosco.chatdroid.navigation.ChatNavHost
 fun ChatApp() {
     Scaffold(
         bottomBar = {}
-    ) { paddingValues ->
+    ) { innerPaddings ->
         Box(
             modifier = Modifier
-                .padding(paddingValues)
+                .consumeWindowInsets(innerPaddings)
+                .padding(innerPaddings)
+                .imePadding()
                 .fillMaxSize()
         ) {
             ChatNavHost()

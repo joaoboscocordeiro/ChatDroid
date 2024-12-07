@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.joaobosco.chatdroid.R
+import com.joaobosco.chatdroid.ui.validator.FormValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -13,7 +14,9 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class SignInViewModel @Inject constructor() : ViewModel() {
+class SignInViewModel @Inject constructor(
+    private val formValidator: FormValidator<SignInFormState>
+) : ViewModel() {
 
     var formState by mutableStateOf(SignInFormState())
         private set
@@ -35,21 +38,26 @@ class SignInViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun doSignIn() {
-        var isFormValid = true
         if (formState.email.isBlank()) {
             formState = formState.copy(emailError = R.string.error_message_email_invalid)
-            isFormValid = false
+            isValidForm()
         }
 
         if (formState.password.isBlank()) {
             formState = formState.copy(passwordError = R.string.error_message_password_invalid)
-            isFormValid = false
+            isValidForm()
         }
 
-        if (isFormValid) {
+        if (isValidForm()) {
             formState = formState.copy(isLoading = true)
-            // Request to api
+            // Request to API
         }
+    }
+
+    private fun isValidForm(): Boolean {
+        return !formValidator.validate(formState).also {
+            formState = it
+        }.hasError
     }
 
     /*private fun resetFormErrorState() {

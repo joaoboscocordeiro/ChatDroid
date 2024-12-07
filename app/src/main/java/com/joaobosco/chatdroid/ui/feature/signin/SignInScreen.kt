@@ -41,7 +41,9 @@ import com.joaobosco.chatdroid.ui.theme.ChatDroidTheme
 
 @Composable
 fun SignInRoute(
-    viewModel: SignInViewModel = viewModel(),
+    viewModel: SignInViewModel = viewModel {
+        SignInViewModel(SignInFormValidator())
+    },
     navigateToSignUp: () -> Unit
 ) {
     val formState = viewModel.formState
