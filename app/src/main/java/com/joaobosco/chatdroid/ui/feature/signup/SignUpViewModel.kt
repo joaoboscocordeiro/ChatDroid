@@ -4,14 +4,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.joaobosco.chatdroid.R
+import com.joaobosco.chatdroid.data.repository.AuthRepository
+import com.joaobosco.chatdroid.model.CreateAccount
 import com.joaobosco.chatdroid.ui.validator.FormValidator
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Created by "João Bosco" on 04/12/2024.
  */
-class SignUpViewModel(
-    private val formValidator: FormValidator<SignUpFormState>
+
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
+    private val formValidator: FormValidator<SignUpFormState>,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     var formState by mutableStateOf(SignUpFormState())
@@ -72,7 +81,21 @@ class SignUpViewModel(
     private fun doSignUp() {
         if (isValidForm()) {
             formState = formState.copy(isLoading = true)
-            // Request to API
+            viewModelScope.launch {
+                try {
+                    authRepository.signUp(
+                        createAccount = CreateAccount(
+                            username = formState.email,
+                            password = formState.password,
+                            firstName = formState.firstName,
+                            lastName = formState.lastName,
+                            profilePictureId = null
+                        )
+                    )
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 

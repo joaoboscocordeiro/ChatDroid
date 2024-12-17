@@ -4,11 +4,12 @@ import com.joaobosco.chatdroid.R
 import com.joaobosco.chatdroid.ui.validator.EmailValidator
 import com.joaobosco.chatdroid.ui.validator.FormValidator
 import com.joaobosco.chatdroid.ui.validator.PasswordValidator
+import javax.inject.Inject
 
 /**
  * Created by "João Bosco" on 05/12/2024.
  */
-class SignUpFormValidator : FormValidator<SignUpFormState> {
+class SignUpFormValidator @Inject constructor() : FormValidator<SignUpFormState> {
 
     override fun validate(formState: SignUpFormState): SignUpFormState {
         val isFirstNameValid = formState.firstName.isNotEmpty()
