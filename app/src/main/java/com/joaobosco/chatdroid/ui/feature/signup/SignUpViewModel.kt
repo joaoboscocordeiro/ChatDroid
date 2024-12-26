@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.joaobosco.chatdroid.R
 import com.joaobosco.chatdroid.data.repository.AuthRepository
 import com.joaobosco.chatdroid.model.CreateAccount
+import com.joaobosco.chatdroid.model.NetworkException
 import com.joaobosco.chatdroid.ui.validator.FormValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -94,6 +95,11 @@ class SignUpViewModel @Inject constructor(
                     )
                 } catch (e: Exception) {
                     e.printStackTrace()
+                    if (e is NetworkException.ApiException) {
+                        // Mostrar erro de validação de campo para o usuário
+                    } else {
+                        // Mostrar erro genérico para o usuário
+                    }
                 }
             }
         }
