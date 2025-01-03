@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.joaobosco.chatdroid.R
 import com.joaobosco.chatdroid.data.repository.AuthRepository
 import com.joaobosco.chatdroid.model.CreateAccount
-import com.joaobosco.chatdroid.model.NetworkException
 import com.joaobosco.chatdroid.ui.validator.FormValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -83,24 +82,22 @@ class SignUpViewModel @Inject constructor(
         if (isValidForm()) {
             formState = formState.copy(isLoading = true)
             viewModelScope.launch {
-                try {
-                    authRepository.signUp(
-                        createAccount = CreateAccount(
-                            username = formState.email,
-                            password = formState.password,
-                            firstName = formState.firstName,
-                            lastName = formState.lastName,
-                            profilePictureId = null
-                        )
+                authRepository.signUp(
+                    createAccount = CreateAccount(
+                        username = formState.email,
+                        password = formState.password,
+                        firstName = formState.firstName,
+                        lastName = formState.lastName,
+                        profilePictureId = null
                     )
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    if (e is NetworkException.ApiException) {
-                        // Mostrar erro de validação de campo para o usuário
-                    } else {
-                        // Mostrar erro genérico para o usuário
+                ).fold(
+                    onSuccess = {
+                        formState = formState.copy(isLoading = false)
+                    },
+                    onFailure = {
+                        formState = formState.copy(isLoading = false)
                     }
-                }
+                )
             }
         }
     }
