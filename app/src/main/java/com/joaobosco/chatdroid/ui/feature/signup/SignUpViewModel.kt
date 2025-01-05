@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.joaobosco.chatdroid.R
 import com.joaobosco.chatdroid.data.repository.AuthRepository
 import com.joaobosco.chatdroid.model.CreateAccount
+import com.joaobosco.chatdroid.model.NetworkException
 import com.joaobosco.chatdroid.ui.validator.FormValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -92,10 +93,22 @@ class SignUpViewModel @Inject constructor(
                     )
                 ).fold(
                     onSuccess = {
-                        formState = formState.copy(isLoading = false)
+                        formState = formState.copy(
+                            isLoading = false,
+                            isSignedUp = true
+                        )
                     },
                     onFailure = {
-                        formState = formState.copy(isLoading = false)
+                        formState = formState.copy(
+                            isLoading = false,
+                            apiErrorMessageResId = if (it is NetworkException.ApiException) {
+                                when (it.statusCode) {
+                                    400 -> R.string.error_message_api_form_validation_failed
+                                    409 -> R.string.error_message_user_with_username_already_exists
+                                    else -> R.string.common_generic_error_title
+                                }
+                            } else R.string.common_generic_error_title
+                        )
                     }
                 )
             }
@@ -106,5 +119,9 @@ class SignUpViewModel @Inject constructor(
         return !formValidator.validate(formState).also {
             formState = it
         }.hasError
+    }
+
+    fun errorMessageShown() {
+        formState = formState.copy(apiErrorMessageResId = null)
     }
 }

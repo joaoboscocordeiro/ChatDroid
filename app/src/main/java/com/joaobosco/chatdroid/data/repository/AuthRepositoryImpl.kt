@@ -1,9 +1,12 @@
 package com.joaobosco.chatdroid.data.repository
 
+import com.joaobosco.chatdroid.data.di.IoDispatcher
 import com.joaobosco.chatdroid.data.network.NetworkDataSource
 import com.joaobosco.chatdroid.data.network.model.AuthRequest
 import com.joaobosco.chatdroid.data.network.model.CreateAccountRequest
 import com.joaobosco.chatdroid.model.CreateAccount
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -11,20 +14,23 @@ import javax.inject.Inject
  */
 
 class AuthRepositoryImpl @Inject constructor(
-    private val networkDataSource: NetworkDataSource
+    private val networkDataSource: NetworkDataSource,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AuthRepository {
 
     override suspend fun signUp(createAccount: CreateAccount): Result<Unit> {
-        return runCatching {
-            networkDataSource.signUp(
-                request = CreateAccountRequest(
-                    username = createAccount.username,
-                    password = createAccount.password,
-                    firstName = createAccount.firstName,
-                    lastName = createAccount.lastName,
-                    profilePictureId = createAccount.profilePictureId
+        return withContext(ioDispatcher) {
+            runCatching {
+                networkDataSource.signUp(
+                    request = CreateAccountRequest(
+                        username = createAccount.username,
+                        password = createAccount.password,
+                        firstName = createAccount.firstName,
+                        lastName = createAccount.lastName,
+                        profilePictureId = createAccount.profilePictureId
+                    )
                 )
-            )
+            }
         }
     }
 

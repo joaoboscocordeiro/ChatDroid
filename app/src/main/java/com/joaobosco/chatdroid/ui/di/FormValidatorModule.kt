@@ -1,5 +1,7 @@
 package com.joaobosco.chatdroid.ui.di
 
+import com.joaobosco.chatdroid.ui.feature.signin.SignInFormState
+import com.joaobosco.chatdroid.ui.feature.signin.SignInFormValidator
 import com.joaobosco.chatdroid.ui.feature.signup.SignUpFormState
 import com.joaobosco.chatdroid.ui.feature.signup.SignUpFormValidator
 import com.joaobosco.chatdroid.ui.validator.FormValidator
@@ -18,4 +20,8 @@ interface FormValidatorModule {
 
     @Binds
     fun bindSignUpFormValidator(signUpFormValidator: SignUpFormValidator): FormValidator<SignUpFormState>
+
+    @Binds
+    fun bindSignInFormValidator(signInFormValidator: SignInFormValidator): FormValidator<SignInFormState>
+
 }
