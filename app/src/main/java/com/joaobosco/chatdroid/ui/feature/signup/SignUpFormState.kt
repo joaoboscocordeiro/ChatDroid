@@ -30,5 +30,6 @@ data class SignUpFormState(
     val hasError: Boolean = false,
     val isLoading: Boolean = false,
     val isSignedUp: Boolean = false,
-    val apiErrorMessageResId: Int? = null
+    val apiErrorMessageResId: Int? = null,
+    val isCompressingImage: Boolean = false
 )
