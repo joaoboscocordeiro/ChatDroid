@@ -1,6 +1,5 @@
 package com.joaobosco.chatdroid.ui.feature.signup
 
-import android.content.Context
 import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,7 +14,6 @@ import com.joaobosco.chatdroid.model.NetworkException
 import com.joaobosco.chatdroid.ui.validator.FormValidator
 import com.joaobosco.chatdroid.util.image.ImageCompressor
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,7 +25,7 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     private val formValidator: FormValidator<SignUpFormState>,
     private val authRepository: AuthRepository,
-    @ApplicationContext private val context: Context
+    private val imageCompressor: ImageCompressor
 ) : ViewModel() {
 
     var formState by mutableStateOf(SignUpFormState())
@@ -80,7 +78,7 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 formState = formState.copy(isCompressingImage = false)
-                val compressFile = ImageCompressor.compressAndResizeImage(context, uri)
+                val compressFile = imageCompressor.compressAndResizeImage(uri)
                 formState = formState.copy(profilePictureUri = compressFile.toUri())
             } catch (e: Exception) {
                 // Log error

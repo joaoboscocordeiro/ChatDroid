@@ -5,6 +5,7 @@ import com.joaobosco.chatdroid.data.network.NetworkDataSource
 import com.joaobosco.chatdroid.data.network.model.AuthRequest
 import com.joaobosco.chatdroid.data.network.model.CreateAccountRequest
 import com.joaobosco.chatdroid.model.CreateAccount
+import com.joaobosco.chatdroid.model.Image
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -41,5 +42,19 @@ class AuthRepositoryImpl @Inject constructor(
                 password = password
             )
         )
+    }
+
+    override suspend fun uploadProfilePicture(filePath: String): Result<Image> {
+        return withContext(ioDispatcher) {
+            runCatching {
+                val imageResponse = networkDataSource.uploadProfilePicture(filePath)
+                Image(
+                    id = imageResponse.id,
+                    name = imageResponse.name,
+                    type = imageResponse.type,
+                    url = imageResponse.url
+                )
+            }
+        }
     }
 }
