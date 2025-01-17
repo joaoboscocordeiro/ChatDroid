@@ -8,5 +8,5 @@ data class CreateAccount(
     val password: String,
     val firstName: String,
     val lastName: String,
-    val profilePictureId: String?
+    val profilePictureId: Int?
 )

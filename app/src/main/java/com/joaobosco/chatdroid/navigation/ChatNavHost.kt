@@ -69,7 +69,11 @@ fun ChatNavHost() {
                 this.slideOutTo(AnimatedContentTransitionScope.SlideDirection.Right)
             }
         ) {
-            SignUpRoute()
+            SignUpRoute(
+                onSignUpSuccess = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
