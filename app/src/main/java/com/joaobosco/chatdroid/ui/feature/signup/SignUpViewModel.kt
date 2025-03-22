@@ -131,7 +131,7 @@ class SignUpViewModel @Inject constructor(
                         password = formState.password,
                         firstName = formState.firstName,
                         lastName = formState.lastName,
-                        profilePictureId = null
+                        profilePictureId = profilePictureId
                     )
                 ).fold(
                     onSuccess = {
