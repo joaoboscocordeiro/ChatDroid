@@ -1,6 +1,7 @@
 package com.joaobosco.chatdroid.data.repository
 
 import com.joaobosco.chatdroid.data.di.IoDispatcher
+import com.joaobosco.chatdroid.data.manager.TokenManager
 import com.joaobosco.chatdroid.data.network.NetworkDataSource
 import com.joaobosco.chatdroid.data.network.model.AuthRequest
 import com.joaobosco.chatdroid.data.network.model.CreateAccountRequest
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val networkDataSource: NetworkDataSource,
+    private val tokenManager: TokenManager,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AuthRepository {
 
@@ -44,7 +46,7 @@ class AuthRepositoryImpl @Inject constructor(
                         password = password
                     )
                 )
-                // Store Token
+                tokenManager.saveAccessToken(tokenResponse.token)
             }
         }
     }
