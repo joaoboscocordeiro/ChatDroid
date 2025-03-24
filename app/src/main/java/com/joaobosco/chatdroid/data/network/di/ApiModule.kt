@@ -52,7 +52,6 @@ object ApiModule {
                 url("https://chat-api.androidmoderno.com.br")
                 contentType(ContentType.Application.Json)
             }
-
             HttpResponseValidator {
                 handleResponseExceptionWithRequest { cause, _ ->
                     throw if (cause is ClientRequestException) {

@@ -35,13 +35,18 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun signIn(username: String, password: String) {
-        networkDataSource.signIn(
-            request = AuthRequest(
-                username = username,
-                password = password
-            )
-        )
+    override suspend fun signIn(username: String, password: String): Result<Unit> {
+        return withContext(ioDispatcher) {
+            runCatching {
+                val tokenResponse = networkDataSource.signIn(
+                    request = AuthRequest(
+                        username = username,
+                        password = password
+                    )
+                )
+                // Store Token
+            }
+        }
     }
 
     override suspend fun uploadProfilePicture(filePath: String): Result<Image> {
