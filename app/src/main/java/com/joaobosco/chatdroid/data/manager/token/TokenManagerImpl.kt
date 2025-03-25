@@ -1,4 +1,4 @@
-package com.joaobosco.chatdroid.data.manager
+package com.joaobosco.chatdroid.data.manager.token
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit

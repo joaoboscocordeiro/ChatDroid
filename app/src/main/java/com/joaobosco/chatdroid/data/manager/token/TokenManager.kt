@@ -1,4 +1,4 @@
-package com.joaobosco.chatdroid.data.manager
+package com.joaobosco.chatdroid.data.manager.token
 
 import kotlinx.coroutines.flow.Flow
 

@@ -1,7 +1,9 @@
 package com.joaobosco.chatdroid.data.manager.di
 
-import com.joaobosco.chatdroid.data.manager.SecureTokenManagerImpl
-import com.joaobosco.chatdroid.data.manager.TokenManager
+import com.joaobosco.chatdroid.data.manager.selfuser.SelfUserManager
+import com.joaobosco.chatdroid.data.manager.selfuser.SelfUserManagerImpl
+import com.joaobosco.chatdroid.data.manager.token.SecureTokenManagerImpl
+import com.joaobosco.chatdroid.data.manager.token.TokenManager
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -19,4 +21,8 @@ interface ManagerModule {
     @Binds
     @Singleton
     fun bindTokenManager(tokenManager: SecureTokenManagerImpl): TokenManager
+
+    @Binds
+    @Singleton
+    fun bindSelfUserManager(selfUserManager: SelfUserManagerImpl): SelfUserManager
 }

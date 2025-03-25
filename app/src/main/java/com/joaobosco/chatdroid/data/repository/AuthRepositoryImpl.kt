@@ -1,13 +1,15 @@
 package com.joaobosco.chatdroid.data.repository
 
 import com.joaobosco.chatdroid.data.di.IoDispatcher
-import com.joaobosco.chatdroid.data.manager.TokenManager
+import com.joaobosco.chatdroid.data.manager.selfuser.SelfUserManager
+import com.joaobosco.chatdroid.data.manager.token.TokenManager
 import com.joaobosco.chatdroid.data.network.NetworkDataSource
 import com.joaobosco.chatdroid.data.network.model.AuthRequest
 import com.joaobosco.chatdroid.data.network.model.CreateAccountRequest
 import com.joaobosco.chatdroid.model.CreateAccount
 import com.joaobosco.chatdroid.model.Image
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -18,8 +20,19 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val networkDataSource: NetworkDataSource,
     private val tokenManager: TokenManager,
+    private val selfUserManager: SelfUserManager,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AuthRepository {
+
+    override suspend fun getAccessToken(): String? {
+        return tokenManager.accessToken.firstOrNull()
+    }
+
+    override suspend fun clearAccessToken() {
+        withContext(ioDispatcher) {
+            tokenManager.clearAccessToken()
+        }
+    }
 
     override suspend fun signUp(createAccount: CreateAccount): Result<Unit> {
         return withContext(ioDispatcher) {
@@ -60,6 +73,21 @@ class AuthRepositoryImpl @Inject constructor(
                     name = imageResponse.name,
                     type = imageResponse.type,
                     url = imageResponse.url
+                )
+            }
+        }
+    }
+
+    override suspend fun authenticate(token: String): Result<Unit> {
+        return withContext(ioDispatcher) {
+            runCatching {
+                val userResponse = networkDataSource.authenticate(token)
+
+                selfUserManager.saveSelfUserData(
+                    firstName = userResponse.firstName,
+                    lastName = userResponse.lastName,
+                    profilePictureUrl = userResponse.profilePictureUrl ?: "",
+                    username = userResponse.username
                 )
             }
         }

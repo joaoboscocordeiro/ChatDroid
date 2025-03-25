@@ -22,10 +22,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleStartEffect
 import com.joaobosco.chatdroid.R
+import com.joaobosco.chatdroid.ui.components.AppDialog
 import com.joaobosco.chatdroid.ui.theme.BackgroundGradient
 import com.joaobosco.chatdroid.ui.theme.ChatDroidTheme
-import kotlinx.coroutines.delay
 
 /**
  * Created by "João Bosco" on 30/07/2024.
@@ -33,12 +35,43 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashRoute(
+    viewModel: SplashViewModel = hiltViewModel(),
     onNavigateToSignIn: () -> Unit,
+    onNavigateYoMain: () -> Unit,
+    onCloseApp: () -> Unit
 ) {
     SplashScreen()
+
+    LifecycleStartEffect(Unit) {
+        viewModel.checkSession()
+        onStopOrDispose {}
+    }
+
     LaunchedEffect(Unit) {
-        delay(2000)
-        onNavigateToSignIn()
+        viewModel.authenticateState.collect { authenticationState ->
+            when (authenticationState) {
+                SplashViewModel.AuthenticationState.UserAuthenticated -> {
+                    onNavigateYoMain()
+                }
+
+                SplashViewModel.AuthenticationState.UserNotAuthenticated -> {
+                    onNavigateToSignIn()
+                }
+            }
+        }
+    }
+
+    val showErrorDialog = viewModel.showErrorDialogState
+    if (showErrorDialog) {
+        AppDialog(
+            onDismissRequest = {},
+            onConfirmButtonClick = {
+                viewModel.dismissErrorDialog()
+                onCloseApp()
+            },
+            message = stringResource(R.string.error_message_when_opening_app),
+            confirmButtonText = stringResource(R.string.error_confirm_button_close_app)
+        )
     }
 }
 
